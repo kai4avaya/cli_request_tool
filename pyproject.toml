@@ -1,0 +1,19 @@
+[project]
+name = "tito-cli"
+version = "0.1.0"
+description = "CLI tool for TinyTorch Systems"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "requests>=2.31.0",
+]
+
+[project.scripts]
+tito = "login_test:main"
+
+# Note: For now, entry point points to login_test.py
+# Later you can rename login_test.py to tito/cli.py and update this
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
