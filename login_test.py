@@ -163,7 +163,22 @@ def fetch_leaderboard(limit=DEFAULT_LEADERBOARD_LIMIT):
     try:
         response = requests.get(url, params=params)
         response.raise_for_status()
-        return response.json()
+        data = response.json()
+        
+        # Handle different response formats
+        # API might return {"data": [...]} or just [...]
+        if isinstance(data, dict):
+            if "data" in data:
+                return data["data"]
+            elif "leaderboard" in data:
+                return data["leaderboard"]
+            else:
+                # If it's a dict but not the expected format, return empty list
+                return []
+        elif isinstance(data, list):
+            return data
+        else:
+            return []
     except requests.exceptions.HTTPError as e:
         if e.response is not None:
             try:
@@ -299,11 +314,18 @@ def cmd_leaderboard(limit=DEFAULT_LEADERBOARD_LIMIT):
     print("-" * 70)
     
     for idx, row in enumerate(data, 1):
-        user_id = str(row.get("user_id", ""))[:8] + "..."
-        overall = row.get("overall_score", 0)
-        opt = row.get("optimization_score", 0)
-        acc = row.get("accuracy_score", 0)
-        subs = row.get("successful_submissions", 0)
+        # Handle both dict and other formats
+        if isinstance(row, dict):
+            user_id = str(row.get("user_id", ""))[:8] + "..." if row.get("user_id") else "N/A"
+            overall = row.get("overall_score", 0)
+            opt = row.get("optimization_score", 0)
+            acc = row.get("accuracy_score", 0)
+            subs = row.get("successful_submissions", 0)
+        else:
+            # If row is not a dict, skip it or handle differently
+            print(f"{idx:<6} Invalid data format")
+            continue
+        
         print(f"{idx:<6} {user_id:<12} {overall:<12.4f} {opt:<10.4f} {acc:<10.4f} {subs:<12}")
     print()
 

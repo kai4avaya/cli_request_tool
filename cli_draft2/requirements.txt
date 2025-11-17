@@ -1,0 +1,6 @@
+typer
+requests
+rich
+pytest
+pytest-mock
+httpx

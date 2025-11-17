@@ -3,34 +3,34 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Virtual environments
-venv/
-env/
-ENV/
-.venv
+# Virtual environments (at any level)
+**/venv/
+**/env/
+**/ENV/
+**/.venv
 
-# IDE
-.vscode/
-.idea/
+# IDE (at any level)
+**/.vscode/
+**/.idea/
 *.swp
 *.swo
 
-# OS files
-.DS_Store
-Thumbs.db
+# OS files (at any level)
+**/.DS_Store
+**/Thumbs.db
 
-# Environment variables
-.env
+# Environment variables (at any level)
+**/.env
 
-# Distribution / packaging
-dist/
-build/
+# Distribution / packaging (at any level)
+**/dist/
+**/build/
 *.egg-info/
 
-# Testing
-.pytest_cache/
-.coverage
-htmlcov/
+# Testing (at any level)
+**/.pytest_cache/
+**/.coverage
+**/htmlcov/
 
-# Logs
-*.log
+# Logs (at any level)
+**/*.log

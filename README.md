@@ -1,96 +1,79 @@
 # Tito CLI Tool
 
-CLI tool for TinyTorch Systems authentication and management.
+Simple CLI tool for interacting with TinyTorch leaderboard API.
+
+## Structure
+
+```
+cli/
+├── main.py           # Entry point
+├── config.py         # Configuration (API URLs, defaults)
+├── auth.py           # Authentication & session management
+├── leaderboard.py    # Leaderboard API operations
+├── cli.py            # CLI command handlers
+└── tests/            # Test suite
+    ├── test_auth.py
+    ├── test_leaderboard.py
+    ├── test_cli.py
+    └── run_tests.py
+```
 
 ## Installation
 
-### Option 1: Quick Start (Development)
-
 ```bash
-# Create virtual environment (recommended)
-python3 -m venv .venv
-source .venv/bin/activate  # On Windows: .venv\Scripts\activate
-
-# Install dependencies
 pip install -r requirements.txt
-# or
-uv pip install -r requirements.txt
-
-# Run directly
-python login_test.py login
-```
-
-### Option 2: Install as package (Production)
-
-```bash
-# Install in editable mode (for development)
-pip install -e .
-# or
-uv pip install -e .
-
-# Then use the 'tito' command
-tito login
-tito status
-tito logout
-```
-
-### Option 3: Build and install package
-
-```bash
-# Build the package
-pip install build
-python -m build
-
-# Install the built package
-pip install dist/tito_cli-0.1.0-py3-none-any.whl
-
-# Use the 'tito' command
-tito login
 ```
 
 ## Usage
 
 ```bash
 # Login
-tito login
+python main.py login
+
+# View leaderboard (top 10)
+python main.py leaderboard
+
+# View top 20
+python main.py leaderboard 20
+
+# Submit score
+python main.py submit --overall-score 100.5 --optimization-score 50.0
 
 # Check status
-tito status
+python main.py status
 
 # Logout
-tito logout
-
-# Show help
-tito help
+python main.py logout
 ```
 
-## How Dependencies Work
-
-When you install this package via `pip` or `uv`, the installer automatically:
-
-1. Reads `pyproject.toml` (or `setup.py`)
-2. Finds the `dependencies` list
-3. Installs all required packages (like `requests`)
-4. Installs your package
-
-**You don't bundle dependencies** - you declare them, and pip/uv handles installation automatically!
-
-## Development
+## Running Tests
 
 ```bash
-# Install in editable mode
-pip install -e .
+# Run all tests
+python tests/run_tests.py
 
-# Make changes to code
-# Changes are immediately available (no reinstall needed)
+# Or run individual test files
+python -m unittest tests.test_auth
+python -m unittest tests.test_leaderboard
+python -m unittest tests.test_cli
 ```
 
-## Project Structure
+## Commands
 
-```
-.
-├── login_test.py      # Main CLI code
-├── pyproject.toml     # Package metadata & dependencies
-├── requirements.txt   # Development dependencies
-└── README.md          # This file
+- `login` - Authenticate and save session
+- `logout` - Clear saved session
+- `status` - Show current login status
+- `leaderboard [N]` - Display top N entries (default: 10)
+- `submit` - Submit/update leaderboard score
+  - `--overall-score NUM`
+  - `--optimization-score NUM`
+  - `--accuracy-score NUM`
+  - `--successful-submissions NUM`
+- `help` - Show help message
+
+## Examples
+
+```bash
+tito leaderboard 20
+tito submit --overall-score 100.5 --optimization-score 50.0
 ```
