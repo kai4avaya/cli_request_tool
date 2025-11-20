@@ -10,6 +10,7 @@ API_BASE_URL = "https://tinytorch.netlify.app"
 ENDPOINTS = {
     "login": f"{API_BASE_URL}/api/auth/login",
     "leaderboard": f"{API_BASE_URL}/api/leaderboard",
+    "submissions": f"{API_BASE_URL}/api/submissions",
     # Web bridge used for CLI loopback/OAuth style login
     "cli_login": f"{API_BASE_URL}/cli-login",
 }
