@@ -15,6 +15,14 @@ class CallbackHandler(http.server.BaseHTTPRequestHandler):
     """
     def do_GET(self):
         parsed_path = urlparse(self.path)
+        
+        # Handle logout route - redirects to frontend logout
+        if parsed_path.path == "/logout":
+            self.send_response(302)  # Redirect
+            self.send_header('Location', f"{config.API_BASE_URL}/logout")
+            self.end_headers()
+            return
+        
         if parsed_path.path != config.AUTH_CALLBACK_PATH:
             self.send_error(404, "Not Found")
             return
@@ -41,9 +49,15 @@ class CallbackHandler(http.server.BaseHTTPRequestHandler):
                 <p>TinyTorch CLI is now authenticated.</p>
                 <p>You can close this tab and return to your terminal.</p>
                 <p style="margin-top: 30px;">
-                    <a href="https://tinytorch.netlify.app/dashboard" target="_blank" style="color: #6b8bd6; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 2px solid #6b8bd6; border-radius: 5px; display: inline-block;">
-                        View Leaderboard →
+                    <a href="https://tinytorch.netlify.app/dashboard" target="_blank" style="color: #6b8bd6; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 2px solid #6b8bd6; border-radius: 5px; display: inline-block; margin-right: 10px;">
+                        View Leaderboard ->
                     </a>
+                    <a href="/logout" style="color: #d66b6b; text-decoration: none; font-weight: bold; padding: 10px 20px; border: 2px solid #d66b6b; border-radius: 5px; display: inline-block;">
+                        Logout & Switch Account
+                    </a>
+                </p>
+                <p style="margin-top: 20px; color: #666; font-size: 0.9em;">
+                    Need to switch accounts? Click "Logout & Switch Account" above, then run <code>tinytorch login</code> again.
                 </p>
                 <p style="margin-top: 30px; color: #666;">
                     This window will close automatically in <span id="countdown" style="font-weight: bold; color: #333;">20</span> seconds.
